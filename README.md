@@ -34,13 +34,13 @@ pipenv run uvicorn --reload --port 8000 main:app
 Try out using [HTTPie](https://httpie.org/):
 
 ```bash
-http POST http://127.0.0.1:8000/read -- text=Hello voice=Zira -o output.wav
+http POST http://127.0.0.1:8000/tts -- text=Hello voice=Zira -o output.wav
 ```
 
 These are the available endpoints:
 
 - `GET /voices` returns a list of voices available for TTS
-- `POST /read` accepts a JSON body with the following parameters, and returns a WAV file:
+- `POST /tts` accepts a JSON body with the following parameters, and returns a WAV file:
     - `text` is the text to be read.
     - `voice` is the name of the voice to be used. You can find the list of voices on the endpoint `/voices` (`http GET http://127.0.0.1:8000/voices`). You only need to specify a part of the voice's `name`, e.g. `Zira` will match `Microsoft Zira Desktop - English (United States)`.
     - `rate` is optional: integer, where 150 is about normal speed, 100 is slow, 200 is fast

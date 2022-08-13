@@ -8,7 +8,7 @@ import os
 
 # MODELS
 #########
-class ReadRequest(pydantic.BaseModel):
+class TTSRequest(pydantic.BaseModel):
     """Text to read"""
     text: str
     voice: str
@@ -49,18 +49,18 @@ def get_voices():
     return pyttsx3.init().getProperty('voices')
 
 
-@app.post("/read")
-def read_text(read_request: ReadRequest, temp_file_name = fastapi.Depends(create_temp_file)):
+@app.post("/tts")
+def text_to_speech(tts_request: TTSRequest, temp_file_name = fastapi.Depends(create_temp_file)):
     """
     Return a WAV file containing the text read by the specified voice.
     """
     engine = pyttsx3.init()
-    print(next(voice.id for voice in get_voices() if read_request.voice in voice.name))
-    engine.setProperty('voice', next(voice.id for voice in get_voices() if read_request.voice in voice.name))
-    if read_request.rate:
-        engine.setProperty('rate', read_request.rate)
+    print(next(voice.id for voice in get_voices() if tts_request.voice in voice.name))
+    engine.setProperty('voice', next(voice.id for voice in get_voices() if tts_request.voice in voice.name))
+    if tts_request.rate:
+        engine.setProperty('rate', tts_request.rate)
     
-    engine.save_to_file(read_request.text, temp_file_name)
+    engine.save_to_file(tts_request.text, temp_file_name)
     engine.runAndWait()
     return fastapi.responses.FileResponse(
         path=temp_file_name,
