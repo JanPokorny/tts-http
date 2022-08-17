@@ -55,7 +55,6 @@ def text_to_speech(tts_request: TTSRequest, temp_file_name = fastapi.Depends(cre
     Return a WAV file containing the text read by the specified voice.
     """
     engine = pyttsx3.init()
-    print(next(voice.id for voice in get_voices() if tts_request.voice in voice.name))
     engine.setProperty('voice', next(voice.id for voice in get_voices() if tts_request.voice in voice.name))
     if tts_request.rate:
         engine.setProperty('rate', tts_request.rate)
